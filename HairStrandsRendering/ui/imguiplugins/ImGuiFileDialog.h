@@ -1408,7 +1408,7 @@ namespace IGFD
 
 	protected:
 		float prBookmarkWidth = 200.0f;
-		bool prBookmarkPaneShown = false;
+		bool prBookmarkPaneShown = true;
 		
 	protected:
 		void prDrawBookmarkButton();															// draw bookmark button

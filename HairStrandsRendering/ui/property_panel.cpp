@@ -1,5 +1,8 @@
 #include "property_panel.h"
 #include "ui/imguiplugins/ImGuiFileDialog.h"
+#include <fstream>
+#include <sstream>
+#include <cstdlib>
 
 void PropertyPanel::render(SceneView* scene_view)
 {
@@ -14,8 +17,16 @@ void PropertyPanel::render(SceneView* scene_view)
         if (ImGui::Button("Open Mesh"))
         {
             m_mesh_loading = true;
+            std::ifstream bookmarks_file_in("bookmarks.txt");
+            if (bookmarks_file_in)
+            {
+                std::stringstream ss;
+                ss << bookmarks_file_in.rdbuf();
+                std::string serialized_bookmarks = ss.str();
+                ImGuiFileDialog::Instance()->DeserializeBookmarks(serialized_bookmarks);
+            }
             ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File",
-                                                    ".ply,.fbx,.obj,.off", "../Data/", 1, nullptr, ImGuiFileDialogFlags_Modal);
+                                                    ".obj,.ply,.fbx,.off", std::getenv("HOME"), 1, nullptr, ImGuiFileDialogFlags_Modal);
         }
         ImGui::SameLine(0, 5.0f);
         if (ImGui::Button("Clear Mesh"))
@@ -33,8 +44,16 @@ void PropertyPanel::render(SceneView* scene_view)
         if (ImGui::Button("Open Strands"))
         {
             m_strands_loading = true;
+            std::ifstream bookmarks_file_in("bookmarks.txt");
+            if (bookmarks_file_in)
+            {
+                std::stringstream ss;
+                ss << bookmarks_file_in.rdbuf();
+                std::string serialized_bookmarks = ss.str();
+                ImGuiFileDialog::Instance()->DeserializeBookmarks(serialized_bookmarks);
+            }
             ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File",
-                                                    ".bin,.cin,.data,.hair", "../Data/", 1, nullptr, ImGuiFileDialogFlags_Modal);
+                                                    ".data,.bin,.cin,.hair", std::getenv("HOME"), 1, nullptr, ImGuiFileDialogFlags_Modal);
         }
         ImGui::SameLine(0, 5.0f);
         if (ImGui::Button("Clear Strands"))
@@ -187,6 +206,8 @@ void PropertyPanel::render(SceneView* scene_view)
             }
             
         }
+        std::string serialized_bookmarks = ImGuiFileDialog::Instance()->SerializeBookmarks(false);
+        std::ofstream("bookmarks.txt") << serialized_bookmarks;
         m_mesh_loading = false;
         m_strands_loading = false;
         ImGuiFileDialog::Instance()->Close();
