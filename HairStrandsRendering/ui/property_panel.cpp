@@ -4,6 +4,8 @@
 #include <sstream>
 #include <cstdlib>
 
+std::string file_dialog_path = "./";
+
 void PropertyPanel::render(SceneView* scene_view)
 {
     auto render_param = scene_view->get_render_param();
@@ -26,7 +28,7 @@ void PropertyPanel::render(SceneView* scene_view)
                 ImGuiFileDialog::Instance()->DeserializeBookmarks(serialized_bookmarks);
             }
             ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File",
-                                                    ".obj,.ply,.fbx,.off", std::getenv("HOME"), 1, nullptr, ImGuiFileDialogFlags_Modal);
+                                                    ".obj,.ply,.fbx,.off", ::file_dialog_path.c_str(), 1, nullptr, ImGuiFileDialogFlags_Modal);
         }
         ImGui::SameLine(0, 5.0f);
         if (ImGui::Button("Clear Mesh"))
@@ -53,7 +55,7 @@ void PropertyPanel::render(SceneView* scene_view)
                 ImGuiFileDialog::Instance()->DeserializeBookmarks(serialized_bookmarks);
             }
             ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File",
-                                                    ".data,.bin,.cin,.hair", std::getenv("HOME"), 1, nullptr, ImGuiFileDialogFlags_Modal);
+                                                    ".data,.bin,.cin,.hair", ::file_dialog_path.c_str(), 1, nullptr, ImGuiFileDialogFlags_Modal);
         }
         ImGui::SameLine(0, 5.0f);
         if (ImGui::Button("Clear Strands"))
@@ -204,7 +206,7 @@ void PropertyPanel::render(SceneView* scene_view)
                 m_strands_current_file = file_name.substr(file_name.find_last_of("/\\") + 1);
                 m_strands_load_callback(file_name);
             }
-            
+            ::file_dialog_path = file_name.substr(0, file_name.find_last_of("/\\")) + "/";
         }
         std::string serialized_bookmarks = ImGuiFileDialog::Instance()->SerializeBookmarks(false);
         std::ofstream("bookmarks.txt") << serialized_bookmarks;

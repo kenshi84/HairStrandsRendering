@@ -26,8 +26,12 @@ private:
     std::unique_ptr<GLWindow> m_window;
 };
 
-int main()
+extern std::string file_dialog_path;
+
+int main(int argc, char** argv)
 {
+    if (argc > 1)
+        ::file_dialog_path = std::string(argv[1]);
     auto app = std::make_unique<Application>("StrandsViewer");
     app->loop();
 
