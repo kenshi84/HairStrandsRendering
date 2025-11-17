@@ -35,7 +35,7 @@ jobs:
           }
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v5
         with:
           submodules: recursive
           
@@ -67,7 +67,7 @@ jobs:
           zip -r HairStrandsRendering-${{ matrix.config.os }}.zip HairStrandsRendering/HairStrandsRendering HairStrandsRendering/imgui.ini HairStrandsRendering/shaders
 
       - name: Upload
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v5
         with:
           path: ./HairStrandsRendering-${{ matrix.config.os }}.zip
           name: HairStrandsRendering-${{ matrix.config.os }}.zip
