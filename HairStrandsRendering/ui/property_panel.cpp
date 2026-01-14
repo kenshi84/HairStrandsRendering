@@ -5,6 +5,7 @@
 #include <cstdlib>
 
 std::string file_dialog_path = "./";
+bool file_dialog_open = false;
 
 void PropertyPanel::render(SceneView* scene_view)
 {
@@ -29,6 +30,7 @@ void PropertyPanel::render(SceneView* scene_view)
             }
             ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File",
                                                     ".obj,.ply,.fbx,.off", ::file_dialog_path.c_str(), 1, nullptr, ImGuiFileDialogFlags_Modal);
+            file_dialog_open = true;
         }
         ImGui::SameLine(0, 5.0f);
         if (ImGui::Button("Clear Mesh"))
@@ -56,6 +58,7 @@ void PropertyPanel::render(SceneView* scene_view)
             }
             ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File",
                                                     ".data,.bin,.cin,.hair", ::file_dialog_path.c_str(), 1, nullptr, ImGuiFileDialogFlags_Modal);
+            file_dialog_open = true;
         }
         ImGui::SameLine(0, 5.0f);
         if (ImGui::Button("Clear Strands"))
@@ -213,5 +216,6 @@ void PropertyPanel::render(SceneView* scene_view)
         m_mesh_loading = false;
         m_strands_loading = false;
         ImGuiFileDialog::Instance()->Close();
+        file_dialog_open = false;
     }
 }

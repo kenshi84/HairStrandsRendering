@@ -2,6 +2,8 @@
 #include "ui/scene_view.h"
 #include "imgui.h"
 
+extern bool file_dialog_open;
+
 void SceneView::resize(int width, int height)
 {
     m_win_size.x = width;
@@ -17,7 +19,8 @@ void SceneView::on_mouse_move(double x, double y, InputButton button)
 
 void SceneView::on_mouse_wheel(double delta)
 {
-    m_camera->on_mouse_wheel(delta);
+    if (!file_dialog_open)
+        m_camera->on_mouse_wheel(delta);
 }
 
 void SceneView::load_mesh(const std::string& filepath)
